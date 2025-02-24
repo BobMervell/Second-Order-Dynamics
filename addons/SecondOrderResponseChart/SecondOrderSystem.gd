@@ -1,16 +1,14 @@
 extends Node
 class_name SecondOrderSystem
-##When using SecondOrderSystem; You need to name your variables the following
-## manner for the chart plugin to work:
 
-# a_name_k
-# a_name_wo 
-# a_name_xi
-# a_name_z
-# a_name_second_order = SecondOrderSystem.new(a_name_k,a_name_wo,
-#		a_name_xi,a_name_z)
+## A plugin designed for Godot 4.3 that allows users to work with complex second-order systems.
+## It integrates a line chart directly into the inspector to visualize the system's response over time.
+## This tool simplifies the analysis and tuning of second-order dynamics, providing a clear graphical representation
+##  of the system's behavior, such as oscillations, damping, and natural frequency, all within the editor.
 
-var k:float #Gain, (offset factor t = +INF )
+
+
+var k:float #Gain, (the output is multiplied by k )
 var wo:float #Pulsation (response/oscillation speed)
 var xi:float #ksi >= 1 == no oscillation, ksi<1 = overshoot + oscillations
 var z:float # z<0 = reversal start , z>0 strong start + overshoot
@@ -24,6 +22,16 @@ var vec2_output_speed:Vector2 = Vector2.ZERO
 var vec3_old_input_pos:Vector3 = Vector3.ZERO
 var vec3_output_speed:Vector3 = Vector3.ZERO
 
+## Optional node for applying wind impact to the rope. 
+##[br][b]Note:[/b]
+## The node [b] must include[/b] the following function:
+## [br][code]func get_wind_strength(position: Vector3) -> Vector3: [/code]
+## This function returns the wind strength and direction at a given world position.
+
+##When using SecondOrderSystem; You need to create your a SecondOrderSystem instance the following manner:
+## [br][code]@export var body_second_order_config:Dictionary
+## [br]@export var body_second_order:SecondOrderSystem = SecondOrderSystem.new(body_second_order_config)[/code]
+## [br] This ensure that the plugin can detect correctly each instance.
 func _init(weights:Dictionary) -> void:
 	k = weights["k"]
 	wo = weights["wo"]
