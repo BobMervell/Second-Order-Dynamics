@@ -33,8 +33,6 @@ func _parse_property(object: Object, _type: Variant.Type, name: String, _hint_ty
 	
 		var chart_plot_instance:SecondOrderPlotter = SecondOrderPlotter.new()
 		add_custom_control(chart_plot_instance)
-		chart_plot_instance.object = object
-		chart_plot_instance.prop_name = name
 		chart_plot_instance.update_chart_weights(corresponding_chart_slider.weights)
 		corresponding_chart_slider.weights_updated.connect(chart_plot_instance.update_chart_weights)
 		command_type_updated.connect(chart_plot_instance.update_chart_type)

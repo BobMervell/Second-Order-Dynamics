@@ -68,7 +68,7 @@ func update_graph_size() -> void:
 	
 	viewport_width = inspector_size[0] * graph_size
 	viewport_height = viewport_width / 1.6
-	viewport_limits = [Vector2(right_offset, 0),
+	viewport_limits = [Vector2(right_offset, top_offset),
 		Vector2(viewport_width+left_offset,viewport_height)]
 	corners = [Vector2(right_offset, top_offset),
 			Vector2(viewport_width+left_offset, top_offset),
@@ -98,7 +98,7 @@ func _draw() -> void:
 			
 	draw_colored_polygon(corners,bg_color)
 	@warning_ignore("unsafe_call_argument")
-	draw_polyline(viewported["array"],command_color,4)
+	draw_polyline(viewported["viewported_values"],command_color,4)
 	draw_polyline(response,output_color,3)
 	draw_polyline(corners,border_color,2)
 
