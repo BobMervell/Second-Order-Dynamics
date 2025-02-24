@@ -11,7 +11,18 @@ config_version=5
 [application]
 
 config/name="Second_order_dynamics"
+run/main_scene="res://node_3d.tscn"
 config/features=PackedStringArray("4.3", "GL Compatibility")
+
+[debug]
+
+gdscript/warnings/exclude_addons=false
+gdscript/warnings/untyped_declaration=1
+gdscript/warnings/inferred_declaration=1
+gdscript/warnings/unsafe_property_access=1
+gdscript/warnings/unsafe_method_access=1
+gdscript/warnings/unsafe_cast=1
+gdscript/warnings/unsafe_call_argument=1
 
 [editor]
 

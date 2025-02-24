@@ -4,3 +4,4 @@
 
 [node name="Node3D" type="Node3D"]
 script = ExtResource("1_iulqe")
+metadata/test0 = 0

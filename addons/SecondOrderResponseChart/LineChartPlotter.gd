@@ -7,12 +7,12 @@ func float_array_to_Vector2Array(coords : Array) -> PackedVector2Array:
 		array.append(Vector2(coord[0], coord[1]))
 	return array
 
-func auto_viewporter(list:Array,out_height,out_width,margin):
+func auto_viewporter(list:Array,out_height,out_width,margin,right_offset):
 	var extremums = get_array_extremums(list)
 	var ratios = get_view_ratio(extremums,out_height,out_width,margin)
 	var array = update_ratio(list,ratios)
 	var offsets =( get_view_offset(get_array_extremums(array),
-			out_height,out_width,margin) )
+			out_height,out_width,margin,right_offset) )
 	array = update_offset(array,offsets)
 	return {"array":array,"ratios":ratios,"offsets":offsets,"extremums":extremums}
 
@@ -44,10 +44,10 @@ func get_view_ratio(extremums:Dictionary,out_height,out_width,margin):
 	var w_ratio = abs(out_width/width)
 	return Vector2(w_ratio,-h_ratio)
 
-func get_view_offset(extremums:Dictionary,out_height,out_width,margin):
+func get_view_offset(extremums:Dictionary,out_height,out_width,margin,right_offset):
 	var min_value = Vector2(extremums["min"].x , extremums["max"].y)
 	#we take the max for y cause y increase the further down not up
-	var bottom_left = Vector2(0,out_height*(1+margin/2)) 
+	var bottom_left = Vector2(right_offset,out_height*(1+margin/2)) 
 	return bottom_left-min_value
 
 func update_ratio(list:Array,ratios):
