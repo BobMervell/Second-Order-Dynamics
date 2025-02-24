@@ -1,37 +1,37 @@
 extends EditorInspectorPlugin
 
-signal command_type_updated(item_id)
+signal command_type_updated(item_id:int)
 
 var second_order_configs:Dictionary
 
 ## every object can handle
-func _can_handle(object: Object) -> bool:
+func _can_handle(_object: Object) -> bool:
 	return true
 
-func _parse_begin(object:Object):
+func _parse_begin(_object:Object) -> void:
 	second_order_configs.clear()
 
 ## Creates a chart plot instance if @export var type is SecondOrderSystem
-func _parse_property(object: Object, type: Variant.Type, name: String, hint_type: PropertyHint,
-		 hint_string: String, usage_flags:PropertyUsageFlags, wide: bool) -> bool:
+func _parse_property(object: Object, _type: Variant.Type, name: String, _hint_type: PropertyHint,
+		 hint_string: String, _usage_flags:PropertyUsageFlags, _wide: bool) -> bool:
 	
 	if name.contains("second_order_config"):
-		var config_id = name.get_slice('_',0)
-		var chart_slider_instance = SecondOrderSliders.new()
+		var config_id:String = name.get_slice('_',0)
+		var chart_slider_instance:SecondOrderSliders = SecondOrderSliders.new()
 		var label:String = "Second order config " + config_id
 		add_property_editor(name,chart_slider_instance,false,label)
 		second_order_configs[config_id] = chart_slider_instance
 		return true
 
 	if hint_string.contains("SecondOrderSystem"):
-		var config_id = name.get_slice('_',0)
+		var config_id:String = name.get_slice('_',0)
 		var corresponding_chart_slider:SecondOrderSliders
 		if second_order_configs.has(config_id):
 			corresponding_chart_slider = second_order_configs[config_id]
 		else:
 			push_warning("error couldn't find config for second order system")
 	
-		var chart_plot_instance = SecondOrderPlotter.new()
+		var chart_plot_instance:SecondOrderPlotter = SecondOrderPlotter.new()
 		add_custom_control(chart_plot_instance)
 		chart_plot_instance.object = object
 		chart_plot_instance.prop_name = name
@@ -43,9 +43,9 @@ func _parse_property(object: Object, type: Variant.Type, name: String, hint_type
 	return false
 
 func add_graph_command_type() -> HBoxContainer:
-	var parent :=HBoxContainer.new()
-	var text := Label.new()
-	var obtion_btn := OptionButton.new()
+	var parent:HBoxContainer = HBoxContainer.new()
+	var text:Label = Label.new()
+	var obtion_btn:OptionButton = OptionButton.new()
 	parent.add_child(text)
 	parent.add_child(obtion_btn)
 	text.text = "Input command: "
