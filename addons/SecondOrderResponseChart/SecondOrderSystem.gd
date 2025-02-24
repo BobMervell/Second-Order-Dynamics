@@ -15,16 +15,16 @@ var wo:float #Pulsation (response/oscillation speed)
 var xi:float #ksi >= 1 == no oscillation, ksi<1 = overshoot + oscillations
 var z:float # z<0 = reversal start , z>0 strong start + overshoot
 
-var old_input_pos := Vector2.ZERO
-var output_speed := Vector2.ZERO
+var old_input_pos:Vector2 = Vector2.ZERO
+var output_speed:Vector2 = Vector2.ZERO
 
-var vec2_old_input_pos := Vector2.ZERO
-var vec2_output_speed := Vector2.ZERO
+var vec2_old_input_pos:Vector2 = Vector2.ZERO
+var vec2_output_speed:Vector2 = Vector2.ZERO
 
-var vec3_old_input_pos := Vector3.ZERO
-var vec3_output_speed := Vector3.ZERO
+var vec3_old_input_pos:Vector3 = Vector3.ZERO
+var vec3_output_speed:Vector3 = Vector3.ZERO
 
-func _init(weights:Dictionary):
+func _init(weights:Dictionary) -> void:
 	k = weights["k"]
 	wo = weights["wo"]
 	xi = weights["xi"]
