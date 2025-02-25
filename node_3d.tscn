@@ -39,8 +39,8 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5054, 0)
 script = ExtResource("2_q5h5u")
 move_second_order_config = {
 "k": 1,
-"wo": 40.0,
-"xi": 1,
+"wo": 40,
+"xi": 1.0,
 "z": 0
 }
 

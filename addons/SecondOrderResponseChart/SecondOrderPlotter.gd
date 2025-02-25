@@ -17,6 +17,7 @@ var command_color:Color = Color.RED
 var output_color:Color = Color.DARK_GREEN
 
 var weights:Dictionary = {"k":1,"wo":40,"xi":1,"z":0}
+#var second_order:SecondOrderSystem = SecondOrderSystem.new(weights)
 var global_delta:float = .016
 var command_array:Array[Vector2] = []
 var response_array:Array[Vector2] = []
@@ -112,8 +113,8 @@ func plot_array_response() -> void:
 	var second_order:SecondOrderSystem = SecondOrderSystem.new(weights)
 	response_array = [Vector2.ZERO]
 	for i:int in range(1,command_array.size()):
-		var output:Array = second_order.vec2_output_variables(global_delta,command_array[i],null,response_array[i-1])
-		response_array.append(output[0])
+		var output:Dictionary = second_order.vec2_second_order_response(global_delta,command_array[i],response_array[i-1])
+		response_array.append(output["output"])
 		
 	# needed fot plotting because second order modified y 
 	for i:int in range(0,response_array.size()):

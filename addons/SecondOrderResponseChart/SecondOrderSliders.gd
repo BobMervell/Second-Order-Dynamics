@@ -38,7 +38,7 @@ func _update_property() -> void:
 	@warning_ignore("unsafe_method_access")
 	weights = get_edited_object().get(get_edited_property()).duplicate(true)
 	if weights.size() <4:
-		weights = {"k":1,"wo":40,"xi":1,"z":0}
+		weights = {"k":1.,"wo":40.,"xi":1.,"z":0.}
 	weights_updated.emit(weights)
 	for elt:String in weights:
 		if elt == "k":

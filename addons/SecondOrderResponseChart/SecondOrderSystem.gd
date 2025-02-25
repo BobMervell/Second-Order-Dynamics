@@ -13,14 +13,12 @@ var wo:float #Pulsation (response/oscillation speed)
 var xi:float #ksi >= 1 == no oscillation, ksi<1 = overshoot + oscillations
 var z:float # z<0 = reversal start , z>0 strong start + overshoot
 
-var old_input_pos:Vector2 = Vector2.ZERO
-var output_speed:Vector2 = Vector2.ZERO
+var vec3_old_input:Vector3 = Vector3.ZERO
+var vec3_output_dot:Vector3  = Vector3.ZERO
 
-var vec2_old_input_pos:Vector2 = Vector2.ZERO
-var vec2_output_speed:Vector2 = Vector2.ZERO
 
-var vec3_old_input_pos:Vector3 = Vector3.ZERO
-var vec3_output_speed:Vector3 = Vector3.ZERO
+var vec2_old_input:Vector2 = Vector2.ZERO
+var vec2_output_dot:Vector2  = Vector2.ZERO
 
 ## When using SecondOrderSystem; You need to create your a SecondOrderSystem instance the following manner:
 ## [br][code] @export var body_second_order_config:Dictionary
@@ -33,38 +31,59 @@ var vec3_output_speed:Vector3 = Vector3.ZERO
 func _init(weights:Dictionary) -> void:
 	if weights.size() < 4:
 		weights = {"k":1,"wo":40,"xi":1,"z":0}
+		push_warning("Second order system weights incorrect, default: ",
+				str({"k":1,"wo":40,"xi":1,"z":0}),"  will be used instead" )
 	
 	k = weights["k"]
 	wo = weights["wo"]
 	xi = weights["xi"]
 	z = weights["z"]
 
-
-func vec2_output_variables(delta:float,input_pos:Vector2,
-		input_speed:Variant,previous_output:Vector2) -> Array:
-	if input_speed == null:
-		input_speed = (input_pos - vec2_old_input_pos)/delta
-		vec2_old_input_pos = input_pos
+## This function computes the second-order response of a system for vector2,
+##[br] returns a dictionnary containing the output and it's derivatives.
+func vec2_second_order_response(delta:float,input:Vector2,
+		previous_output:Vector2,input_dot:Variant=null) -> Dictionary:
 	
-	var output_acc:Variant = ( k * wo**2 * (input_pos + input_speed * z)
-				 - 2 * xi * wo * vec2_output_speed
+	# Estimate input_dot
+	if input_dot == null:
+		input_dot = (input - vec2_old_input)/delta
+		vec2_old_input = input
+	
+	# process second order
+	var output_dotdot:Vector2 = ( k * wo**2 * (input + input_dot * z)
+				 - 2 * xi * wo * vec2_output_dot
 				- wo**2 * previous_output )
-	
-	vec2_output_speed = vec2_output_speed + output_acc * delta / (1 + 2 * xi * wo * delta)
-	previous_output += vec2_output_speed * delta
-	return [previous_output,vec2_output_speed] #no longer previous output
+	vec2_output_dot = vec2_output_dot + output_dotdot * delta / (1 + 2 * xi * wo * delta)
+	previous_output += vec2_output_dot * delta
 
-func vec3_output_variables(delta:float,input_pos:Vector3,
-		input_speed:Variant,previous_output:Vector3) -> Array:
-	if input_speed == null:
-		input_speed = (input_pos - vec3_old_input_pos)/delta
-		vec3_old_input_pos = input_pos
+	return {"output":previous_output,"output_dot":vec2_output_dot,"output_dotdot":output_dotdot}
+
+## This function computes the second-order response of a system for vector2,
+##[br] returns a dictionnary containing the output and it's derivatives.
+func vec3_second_order_response(delta:float,input:Vector3,
+		previous_output:Vector3,input_dot:Variant=null) -> Dictionary:
 	
-	var output_acc:Variant = ( k * wo**2 * (input_pos + input_speed * z)
-				 - 2 * xi * wo * vec3_output_speed
+	# Estimate input_dot
+	if input_dot == null:
+		input_dot = (input - vec3_old_input)/delta
+		vec3_old_input = input
+	
+	# process second order
+	var output_dotdot:Vector3 = ( k * wo**2 * (input + input_dot * z)
+				 - 2 * xi * wo * vec2_output_dot
 				- wo**2 * previous_output )
+	vec3_output_dot = vec3_output_dot + output_dotdot * delta / (1 + 2 * xi * wo * delta)
+	previous_output += vec3_output_dot * delta
+	return {"output":previous_output,"output_dot":vec3_output_dot,"output_dotdot":output_dotdot}
 	
-	vec3_output_speed = vec3_output_speed + output_acc * delta / (1 + 2 * xi * wo * delta)
+## DEPRECATED
+func update_weights(weights:Dictionary) -> void:
+	if weights.size() < 4:
+		weights = {"k":1,"wo":40,"xi":1,"z":0}
+		push_warning("Second order system weights incorrect, default: ",
+				str({"k":1,"wo":40,"xi":1,"z":0}),"  will be used instead" )
 	
-	previous_output += vec3_output_speed * delta
-	return [previous_output,vec3_output_speed] #no longer previous output
+	k = weights["k"]
+	wo = weights["wo"]
+	xi = weights["xi"]
+	z = weights["z"]
