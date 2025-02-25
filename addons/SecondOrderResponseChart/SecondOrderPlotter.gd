@@ -16,7 +16,7 @@ var top_offset:float
 var command_color:Color = Color.RED
 var output_color:Color = Color.DARK_GREEN
 
-var weights:Dictionary
+var weights:Dictionary = {"k":1,"wo":40,"xi":1,"z":0}
 var global_delta:float = .016
 var command_array:Array[Vector2] = []
 var response_array:Array[Vector2] = []
@@ -122,7 +122,8 @@ func plot_array_response() -> void:
 	queue_redraw()
 
 func update_chart_weights(new_weights:Dictionary) -> void:
-	weights = new_weights
+	for key:String in new_weights:
+		weights[key] = new_weights[key]
 	plot_array_response()
 
 func update_chart_type(chart_type_ID:int) -> void:

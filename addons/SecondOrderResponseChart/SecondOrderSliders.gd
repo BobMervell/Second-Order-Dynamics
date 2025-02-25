@@ -2,6 +2,8 @@
 extends EditorProperty
 class_name SecondOrderSliders
 
+@export var test:float =1
+
 signal weights_updated(weights:Dictionary)
 
 var k_slider:EditorSpinSlider
@@ -11,20 +13,16 @@ var z_slider:EditorSpinSlider
 var weights:Dictionary
 
 func _init() -> void :
-	add_child(add_sliders())
-
-
-func add_sliders() -> VBoxContainer:
 	var parent:VBoxContainer = VBoxContainer.new()
-	k_slider = add_graph_weight("k",-2,2,.01,0)
-	wo_slider = add_graph_weight("wo",0,300,.5,0)
-	xi_slider = add_graph_weight("xi",0,10,.01,0)
+	k_slider = add_graph_weight("k",-2,2,.01,1)
+	wo_slider = add_graph_weight("wo",0,300,.5,40)
+	xi_slider = add_graph_weight("xi",0,10,.001,1)
 	z_slider =add_graph_weight("z",-2,2,.001,0)
 	parent.add_child(k_slider)
 	parent.add_child(wo_slider)
 	parent.add_child(xi_slider)
 	parent.add_child(z_slider)
-	return parent
+	add_child(parent)
 
 func add_graph_weight(weight_name:String,min_value:float,max_value:float,step:float,export_value:float) -> EditorSpinSlider:
 	var float_slider:EditorSpinSlider = EditorSpinSlider.new()
@@ -37,7 +35,10 @@ func add_graph_weight(weight_name:String,min_value:float,max_value:float,step:fl
 	return float_slider
 
 func _update_property() -> void:
-	weights = get_edited_object().get(get_edited_property())
+	@warning_ignore("unsafe_method_access")
+	weights = get_edited_object().get(get_edited_property()).duplicate(true)
+	if weights.size() <4:
+		weights = {"k":1,"wo":40,"xi":1,"z":0}
 	weights_updated.emit(weights)
 	for elt:String in weights:
 		if elt == "k":
@@ -53,3 +54,4 @@ func slider_value_changed(new_value:float,weight_name:String) -> void:
 	weights[weight_name] = new_value
 	get_edited_object().set(get_edited_property(),weights)
 	weights_updated.emit(weights)
+	emit_changed(get_edited_property(),weights)

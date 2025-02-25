@@ -22,21 +22,23 @@ var vec2_output_speed:Vector2 = Vector2.ZERO
 var vec3_old_input_pos:Vector3 = Vector3.ZERO
 var vec3_output_speed:Vector3 = Vector3.ZERO
 
-## Optional node for applying wind impact to the rope. 
-##[br][b]Note:[/b]
-## The node [b] must include[/b] the following function:
-## [br][code]func get_wind_strength(position: Vector3) -> Vector3: [/code]
-## This function returns the wind strength and direction at a given world position.
-
-##When using SecondOrderSystem; You need to create your a SecondOrderSystem instance the following manner:
-## [br][code]@export var body_second_order_config:Dictionary
-## [br]@export var body_second_order:SecondOrderSystem = SecondOrderSystem.new(body_second_order_config)[/code]
+## When using SecondOrderSystem; You need to create your a SecondOrderSystem instance the following manner:
+## [br][code] @export var body_second_order_config:Dictionary
+## [br] @export var body_second_order:SecondOrderSystem[/code]
 ## [br] This ensure that the plugin can detect correctly each instance.
+## [br] You also need to initiateeach instance in ready
+## [br][code] body_second_order = SecondOrderSystem.new(body_second_order_config)[/code]
+##[br][b]Note:[/b]
+## Use vec2_output_variables or vec3_output_variables depending on your vectors type
 func _init(weights:Dictionary) -> void:
+	if weights.size() < 4:
+		weights = {"k":1,"wo":40,"xi":1,"z":0}
+	
 	k = weights["k"]
 	wo = weights["wo"]
 	xi = weights["xi"]
 	z = weights["z"]
+
 
 func vec2_output_variables(delta:float,input_pos:Vector2,
 		input_speed:Variant,previous_output:Vector2) -> Array:

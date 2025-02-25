@@ -12,7 +12,7 @@ func _parse_begin(_object:Object) -> void:
 	second_order_configs.clear()
 
 ## Creates a chart plot instance if @export var type is SecondOrderSystem
-func _parse_property(object: Object, _type: Variant.Type, name: String, _hint_type: PropertyHint,
+func _parse_property(_object: Object, _type: Variant.Type, name: String, _hint_type: PropertyHint,
 		 hint_string: String, _usage_flags:PropertyUsageFlags, _wide: bool) -> bool:
 	
 	if name.contains("second_order_config"):
@@ -29,7 +29,9 @@ func _parse_property(object: Object, _type: Variant.Type, name: String, _hint_ty
 		if second_order_configs.has(config_id):
 			corresponding_chart_slider = second_order_configs[config_id]
 		else:
-			push_warning("error couldn't find config for second order system")
+			push_warning("Second order system plugin error:\n
+				Unable to find corresponding config for: " + name.to_upper() + 
+				"\n See second order system for correct implementation.")
 	
 		var chart_plot_instance:SecondOrderPlotter = SecondOrderPlotter.new()
 		add_custom_control(chart_plot_instance)
