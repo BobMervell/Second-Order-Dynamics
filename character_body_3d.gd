@@ -27,7 +27,8 @@ func _physics_process(delta: float) -> void:
 		input_velocity.x = move_toward(velocity.x, 0, SPEED)
 		input_velocity.z = move_toward(velocity.z, 0, SPEED)
 	
-	output_velocity = move_second_order.get_second_order_response(delta,input_velocity,output_velocity)[0]
+	output_velocity = move_second_order.vec3_second_order_response(delta,
+			input_velocity,output_velocity)["output"]
 
 	if second_order_activated: 
 		velocity = output_velocity

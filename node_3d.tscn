@@ -38,9 +38,9 @@ environment = SubResource("Environment_1ymp7")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5054, 0)
 script = ExtResource("2_q5h5u")
 move_second_order_config = {
-"k": 0.74,
-"wo": 10.0,
-"xi": 1.0,
+"k": 1.0,
+"wo": 43.0,
+"xi": 0.054,
 "z": 0.0
 }
 

@@ -70,7 +70,7 @@ func vec3_second_order_response(delta:float,input:Vector3,
 	
 	# process second order
 	var output_dotdot:Vector3 = ( k * wo**2 * (input + input_dot * z)
-				 - 2 * xi * wo * vec2_output_dot
+				 - 2 * xi * wo * vec3_output_dot
 				- wo**2 * previous_output )
 	vec3_output_dot = vec3_output_dot + output_dotdot * delta / (1 + 2 * xi * wo * delta)
 	previous_output += vec3_output_dot * delta
