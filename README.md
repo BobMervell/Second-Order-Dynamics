@@ -1,8 +1,6 @@
 # Second-Order-Dynamics
 Second Order Dynamics Addon for Godot ⚙️🎮  A Godot addon that implements Second Order Dynamics for smoother, more natural, and customizable motion. Ideal for spring-like movement, responsive animations, and physics-based effects with precise control over damping, frequency, and responsiveness. 🚀
 
-![alt text](https://github.com/LucasROUZE/Verlet_rope_addon/blob/main/Rope_screenshot.png)
-
 # ✨ Features:
 
 ✔️ **Fully Customizable Motion Response** – Easily tweak parameters to fine-tune system dynamics and achieve the desired motion behavior.
@@ -76,13 +74,18 @@ With theses 4 lines of code your SecondOrderSystem should be all setup, the line
 
 To customize your movement response with the plugin, you need to call the function respective functions for vector2 and vector3:
 
-      	output_velocity = move_second_order.vec3_output_variables(delta,input_velocity,null,output_velocity)[0]
+      	output_velocity = move_second_order.vec2_second_order_response(delta,input_velocity,output_velocity,)["output"]
+        output_velocity = move_second_order.vec3_second_order_response(delta,input_velocity,output_velocity,)["output"]
 
+**Note:** 
+
+You can use the plugin on position,speed or acceleration, but also on rotation, rotation_speed...
+I find it has best result on speed but have a try and find out what suit your needs the best.
 
 
 ## 📝 License:
 
-This project is licensed under the, you can use and modify it except for commercial uses
+This project is licensed under the, you can use and modify it except for commercial uses credit is needed. 
 
 ## 🌟 Support:
 
