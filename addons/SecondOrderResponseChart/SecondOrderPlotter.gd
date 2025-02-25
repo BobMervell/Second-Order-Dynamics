@@ -2,16 +2,12 @@
 extends EditorProperty
 class_name SecondOrderPlotter
 
-var margin:float =.4
-var graph_size:float = .9
-var right2left_offset_ratio:float = .7
+var margin:float =.4 # in chart vertical margin
+var left_offset:int = 25 #offset of chart on the left
 var viewport_height:float
 var viewport_width:float
-var corners:Array
+var corners:Array 
 var viewport_limits:Array
-var right_offset:float
-var left_offset:float
-var top_offset:float
 
 var command_color:Color = Color.RED
 var output_color:Color = Color.DARK_GREEN
@@ -39,17 +35,10 @@ func add_graph_response_time() -> HBoxContainer:
 	end_text.text = "s"
 	return parent
 
-func add_graph_container() -> Control:
-	var container:Control = Control.new()
-	container.set_anchors_preset(chart_container.PRESET_FULL_RECT)
-	return container
-
-
-
 func _init() -> void:
 	var parent:VBoxContainer = VBoxContainer.new()
 	chart_plotter = LineChartPlotter.new()
-	chart_container = add_graph_container()
+	chart_container = Control.new()
 	parent.add_child(chart_container)
 	parent.add_child(add_graph_response_time())
 	add_child(parent)
@@ -61,22 +50,21 @@ func _ready() -> void:
 
 func update_graph_size() -> void:
 	var inspector_size:Vector2 = EditorInterface.get_inspector().size
-
-	right_offset = inspector_size[0] * (1-graph_size)
-	left_offset = right2left_offset_ratio * right_offset
-	top_offset = left_offset *.2
 	
-	viewport_width = inspector_size[0] * graph_size
-	viewport_height = viewport_width / 1.6
-	viewport_limits = [Vector2(right_offset, top_offset),
-		Vector2(viewport_width+left_offset,viewport_height)]
-	corners = [Vector2(right_offset, top_offset),
-			Vector2(viewport_width+left_offset, top_offset),
-			Vector2(viewport_width+left_offset,viewport_height),
-			Vector2(right_offset,viewport_height),
-			Vector2(right_offset, top_offset)]
+	# not custom_minimum_size.x because can't reduce size and crash if too big
+	chart_container.custom_minimum_size.y = inspector_size.x / 1.6 - left_offset
+	chart_container.size.y = chart_container.custom_minimum_size.y
 	
-	chart_container.custom_minimum_size = Vector2(viewport_width,viewport_height)
+	viewport_width = chart_container.size.y * 1.6 
+	viewport_height = chart_container.size.y
+	
+	viewport_limits = [Vector2(0, 0),
+		Vector2(viewport_width,viewport_height)]
+	corners = [Vector2(0, 0),
+			Vector2(viewport_width, 0),
+			Vector2(viewport_width,viewport_height),
+			Vector2(0,viewport_height),
+			Vector2(0, 0)]
 
 func _physics_process(delta:float) -> void:
 	global_delta = delta
@@ -86,12 +74,12 @@ func _draw() -> void:
 	var bg_color:Color = editor_settings.get_setting("text_editor/theme/highlighting/background_color")
 	var border_color:Color = editor_settings.get_setting("text_editor/theme/highlighting/text_color")
 	
-	var graph_height:float = viewport_height*(1-margin)-top_offset
-	var graph_width:float = viewport_width-right_offset+left_offset
+	var graph_height:float = viewport_height*(1-margin)
+	var graph_width:float = viewport_width
 
 	
 	var viewported:Dictionary = chart_plotter.auto_viewporter(command_array,
-			graph_height,graph_width,margin,right_offset)
+			graph_height,graph_width,margin)
 	@warning_ignore("unsafe_call_argument")
 	var response:Array = chart_plotter.adapt_viewporter(response_array,
 			viewported["ratios"],viewported["offsets"],viewport_limits)

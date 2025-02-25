@@ -1,11 +1,11 @@
 class_name LineChartPlotter extends Control
 
-func auto_viewporter(values:Array,out_height:float,out_width:float,margin:float,right_offset:float) -> Dictionary:
+func auto_viewporter(values:Array,out_height:float,out_width:float,margin:float) -> Dictionary:
 	var extremums:Dictionary = get_array_extremums(values)
 	var ratios:Vector2 = get_view_ratio(extremums,out_height,out_width,margin)
 	var viewported_values:Array = update_ratio(values,ratios)
 	var offsets:Vector2 =( get_view_offset(get_array_extremums(viewported_values),
-			out_height,margin,right_offset) )
+			out_height,margin) )
 	viewported_values = update_offset(viewported_values,offsets)
 	return {"viewported_values":viewported_values,"ratios":ratios,"offsets":offsets,"extremums":extremums}
 
@@ -37,11 +37,11 @@ func get_view_ratio(extremums:Dictionary,out_height:float,out_width:float,margin
 	var w_ratio:float = abs(out_width/width)
 	return Vector2(w_ratio,-h_ratio)
 
-func get_view_offset(extremums:Dictionary,out_height:float,margin:float,right_offset:float) -> Vector2:
+func get_view_offset(extremums:Dictionary,out_height:float,margin:float) -> Vector2:
 	@warning_ignore("unsafe_call_argument")
 	var min_value:Vector2 = Vector2(extremums["min"].x , extremums["max"].y)
 	#we take the max for y cause y increase the further down not up
-	var bottom_left:Vector2 = Vector2(right_offset,out_height*(1+margin/2)) 
+	var bottom_left:Vector2 = Vector2(0,out_height*(1+margin/2)) 
 	return bottom_left-min_value
 
 func update_ratio(list:Array,ratios:Vector2) -> Array[Vector2]:

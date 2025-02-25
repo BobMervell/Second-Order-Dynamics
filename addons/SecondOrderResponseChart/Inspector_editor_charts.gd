@@ -32,13 +32,13 @@ func _parse_property(_object: Object, _type: Variant.Type, name: String, _hint_t
 			push_warning("Second order system plugin error:\n
 				Unable to find corresponding config for: " + name.to_upper() + 
 				"\n See second order system for correct implementation.")
-	
+		
 		var chart_plot_instance:SecondOrderPlotter = SecondOrderPlotter.new()
-		add_custom_control(chart_plot_instance)
 		chart_plot_instance.update_chart_weights(corresponding_chart_slider.weights)
 		corresponding_chart_slider.weights_updated.connect(chart_plot_instance.update_chart_weights)
 		command_type_updated.connect(chart_plot_instance.update_chart_type)
 		add_custom_control(add_graph_command_type())
+		add_custom_control(chart_plot_instance)
 		return true
 	return false
 
@@ -54,6 +54,8 @@ func add_graph_command_type() -> HBoxContainer:
 	obtion_btn.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	obtion_btn.item_selected.connect(item_value_updated)
 	return parent
+
+
 
 func item_value_updated(item_id:int) -> void:
 	command_type_updated.emit(item_id)

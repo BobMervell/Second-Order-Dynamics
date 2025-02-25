@@ -38,10 +38,10 @@ environment = SubResource("Environment_1ymp7")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5054, 0)
 script = ExtResource("2_q5h5u")
 move_second_order_config = {
-"k": 1,
-"wo": 86.5,
-"xi": 0.214,
-"z": 0
+"k": 0.74,
+"wo": 10.0,
+"xi": 1.0,
+"z": 0.0
 }
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="CharacterBody3D"]
