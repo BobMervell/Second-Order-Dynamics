@@ -9,9 +9,10 @@ Second Order Dynamics Addon for Godot ⚙️🎮  A Godot addon that implements 
 
 ✔️ **System Gain** (k) – Controls the overall amplitude of the response by scaling the output proportionally.
 
+✔️ **Damping Ratio** (𝜉 - (xi in editor) – Adjusts how quickly oscillations decay, allowing for underdamped, critically damped, or overdamped responses.
+
 ✔️ **Natural Frequency** (𝜔0 - (wo in editor)) – Defines the inherent oscillation speed of the system, affecting how fast it reacts to changes.
 
-✔️ **Damping Ratio** (𝜉 - (xi in editor) – Adjusts how quickly oscillations decay, allowing for underdamped, critically damped, or overdamped responses.
 
 ✔️ **Velocity Coupling Factor** (z) – Modifies the influence of input velocity on the output, enabling reverse or stronger starts .
 
