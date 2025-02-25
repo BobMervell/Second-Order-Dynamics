@@ -19,6 +19,8 @@ Second Order Dynamics Addon for Godot ⚙️🎮  A Godot addon that implements 
 
 ✔️ **Seamless Integration** – Designed for Godot 4.3, the charts adapts to your theme and window size.
 
+✔️ **Example Scene** – Project include a simple example scene.
+
 # 📦 Installation:
 
 1. **Download the Addon:** Clone or download the repository from GitHub.
@@ -29,9 +31,9 @@ Second Order Dynamics Addon for Godot ⚙️🎮  A Godot addon that implements 
    
     Go to Project > Project Settings > Plugins.
    
-    Enable Verlet Rope Addon.
+    Enable SecondOrderDynamics Addon.
 
-**Note:** You only need to place the verlet_rope folder in "res://addons/" in your godot app.
+**Note:** You only need to place the SecondOrderDynamics folder in "res://addons/" in your godot app.
 
 # 🛠️ Usage Guide:
 
@@ -85,7 +87,7 @@ I find it has best result on speed but have a try and find out what suit your ne
 
 ## 📝 License:
 
-This project is licensed under the, you can use and modify it except for commercial uses credit is needed. 
+This project is licensed under the CC BY-NC 4.0, you can use and modify it except for commercial uses credit is needed. 
 
 ## 🌟 Support:
 
