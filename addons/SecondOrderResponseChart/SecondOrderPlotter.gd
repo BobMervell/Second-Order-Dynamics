@@ -17,7 +17,6 @@ var command_color:Color = Color.RED
 var output_color:Color = Color.DARK_GREEN
 
 var weights:Dictionary = {"k":1,"wo":40,"xi":1,"z":0}
-#var second_order:SecondOrderSystem = SecondOrderSystem.new(weights)
 var global_delta:float = .016
 var command_array:Array[Vector2] = []
 var response_array:Array[Vector2] = []
