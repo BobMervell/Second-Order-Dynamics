@@ -3,6 +3,8 @@ Second Order Dynamics Addon for Godot ⚙️🎮  A Godot addon that implements 
 
 # ✨ Features:
 
+✔️ **Real-Time Visual Feedback** – A built-in line chart in the inspector provides instant visualization of the system's response.
+
 ✔️ **Fully Customizable Motion Response** – Easily tweak parameters to fine-tune system dynamics and achieve the desired motion behavior.
 
 ✔️ **System Gain** (k) – Controls the overall amplitude of the response by scaling the output proportionally.
@@ -12,10 +14,6 @@ Second Order Dynamics Addon for Godot ⚙️🎮  A Godot addon that implements 
 ✔️ **Damping Ratio** (𝜉 - (xi in editor) – Adjusts how quickly oscillations decay, allowing for underdamped, critically damped, or overdamped responses.
 
 ✔️ **Velocity Coupling Factor** (z) – Modifies the influence of input velocity on the output, enabling reverse or stronger starts .
-
-✔️ **Optimized for Performance** – Efficient calculations ensure smooth runtime behavior.
-
-✔️ **Real-Time Visual Feedback** – A built-in line chart in the inspector provides instant visualization of the system's response.
 
 ✔️ **Seamless Integration** – Designed for Godot 4.3, the charts adapts to your theme and window size.
 
