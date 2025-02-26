@@ -1,22 +1,47 @@
 # Second-Order-Dynamics
-Second Order Dynamics Addon for Godot ⚙️🎮  A Godot addon that implements Second Order Dynamics for smoother, more natural, and customizable motion. Ideal for spring-like movement, responsive animations, and physics-based effects with precise control over damping, frequency, and responsiveness. 🚀
+Second Order Dynamics Addon for Godot ⚙️🎮  A Godot addon that implements Second Order Dynamics for smoother, more natural, and customizable motion. Ideal for spring-like movement, responsive animations, and physics-based effects with precise control over damping, frequency, and responsiveness. This addon can be used to customize the movement of pretty much every node, in 2d and 3d. 🚀
 
 # ✨ Features:
 
 ✔️ **Real-Time Visual Feedback** – A built-in line chart in the inspector provides instant visualization of the system's response.
 
+![alt text](https://github.com/BobMervell/Second-Order-Dynamics/blob/main/images/visual-feedback.png)
+
 ✔️ **Fully Customizable Motion Response** – Easily tweak parameters to fine-tune system dynamics and achieve the desired motion behavior.
 
 ✔️ **System Gain** (k) – Controls the overall amplitude of the response by scaling the output proportionally.
 
+![alt text](https://github.com/BobMervell/Second-Order-Dynamics/blob/main/images/gain.png)
+
 ✔️ **Damping Ratio** (𝜉 - (xi in editor) – Adjusts how quickly oscillations decay, allowing for underdamped, critically damped, or overdamped responses.
+
+![alt text](https://github.com/BobMervell/Second-Order-Dynamics/blob/main/images/xi.png)
 
 ✔️ **Natural Frequency** (𝜔0 - (wo in editor)) – Defines the inherent oscillation speed of the system, affecting how fast it reacts to changes.
 
+![alt text](https://github.com/BobMervell/Second-Order-Dynamics/blob/main/images/Omega0.png)
 
 ✔️ **Velocity Coupling Factor** (z) – Modifies the influence of input velocity on the output, enabling reverse or stronger starts .
 
+![alt text](https://github.com/BobMervell/Second-Order-Dynamics/blob/main/images/z1.png)
+![alt text](https://github.com/BobMervell/Second-Order-Dynamics/blob/main/images/z2.png)
+
+
 ✔️ **Seamless Integration** – Designed for Godot 4.3, the charts adapts to your theme and window size.
+
+![alt text](https://github.com/BobMervell/Second-Order-Dynamics/blob/main/images/theme%201.png)
+![alt text](https://github.com/BobMervell/Second-Order-Dynamics/blob/main/images/theme%202.png)
+
+✔️ **Simulation time** – You can tweak the simulation duration showed in the inspector.
+
+![alt text](https://github.com/BobMervell/Second-Order-Dynamics/blob/main/images/simulation_duration1.png)
+![alt text](https://github.com/BobMervell/Second-Order-Dynamics/blob/main/images/simulation_duration2.png)
+
+✔️ **Simulation precision** – You can tweak the simulation precision showed in the inspector.
+
+![alt text](https://github.com/BobMervell/Second-Order-Dynamics/blob/main/images/precision1.png)
+![alt text](https://github.com/BobMervell/Second-Order-Dynamics/blob/main/images/precision2.png)
+
 
 ✔️ **Example Scene** – Project include a simple example scene.
 
@@ -73,8 +98,9 @@ With theses 4 lines of code your SecondOrderSystem should be all setup, the line
 
 ## Using the plugin in game:
 
-To customize your movement response with the plugin, you need to call the function respective functions for vector2 and vector3:
+To customize your movement response with the plugin, you need to call the function respective functions for float, vector2 and vector3:
 
+        output_velocity = move_second_order.float_second_order_response(delta,input_velocity,output_velocity,)["output"]
       	output_velocity = move_second_order.vec2_second_order_response(delta,input_velocity,output_velocity,)["output"]
         output_velocity = move_second_order.vec3_second_order_response(delta,input_velocity,output_velocity,)["output"]
 
