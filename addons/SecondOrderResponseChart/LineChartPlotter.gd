@@ -63,24 +63,57 @@ func readapt_vertical_axis(list:Array[Vector2],out_height:float) -> Array:
 	list[1] = Vector2(list[1][0],out_height)
 	return list
 
-func vect_step(step_amp:float,nbr_pts:int,step_at:int) -> Array[Vector2]:
+func precise_step(simulation_time:float,delta:float,step_at:float,precision:float) -> Array[Vector2]:
+	var step:Array[Vector2]
+	var elapsed_time:float = 0
+	while elapsed_time < simulation_time:
+		elapsed_time += delta * precision
+		if elapsed_time <= step_at:
+			step.append(Vector2(elapsed_time,0))
+		else: step.append(Vector2(elapsed_time,1))
+	return step
+
+func complex_command(simulation_time:float,delta:float,precision:float) -> Array[Vector2]:
+	var command:Array[Vector2]
+	var base_time:float = 1
+	var elapsed_time:float = 0
+	while elapsed_time < simulation_time:
+		elapsed_time += delta * precision
+		if elapsed_time <= base_time/5:
+			command.append(Vector2(elapsed_time,0))
+		elif elapsed_time <= 4*base_time:
+			command.append(Vector2(elapsed_time,sin((elapsed_time-base_time)*5)))
+		elif elapsed_time <= 7*base_time:
+			command.append(Vector2(elapsed_time,4*(elapsed_time-4*base_time)/8.0))
+		else:
+			command.append(Vector2(elapsed_time,0))
+	return command
+
+
+
+
+## DEPRECATED
+## use precise_step
+func step(nbr_pts:int,step_at:int) -> Array[Vector2]:
 	var step:Array[Vector2]
 	for i:int in range(0,nbr_pts):
 		if i <= step_at:
 			step.append(Vector2(i,0))
-		else: step.append(Vector2(i,step_amp))
+		else: step.append(Vector2(i,1))
 	return step
 
-func vect_command(amp:float,nbr_pts:int) -> Array[Vector2]:
-	var command:Array[Vector2]
-	@warning_ignore("integer_division")
-	var tenth:int = nbr_pts / 10
-	for i:int in range(0,tenth):
-		command.append(Vector2(i,0))
-	for i:int in range(tenth, 4*tenth):
-		command.append(Vector2(i,amp*sin((i-tenth)/8.0)))
-	for i:int in range(4*tenth, 7*tenth):
-		command.append(Vector2(i,(i-4*tenth)/8.0))
-	for i:int in range(7*tenth,nbr_pts ):
-		command.append(Vector2(i,0))
-	return command
+## DEPRECATED
+## use precise_step
+func step_exp(nbr_pts: int, step_at: int) -> Array[Vector2]:
+	var step: Array[Vector2] = []
+	
+	# Ajouter les deux points avant le step
+	step.append(Vector2(0, 0))
+	step.append(Vector2(step_at - 1, 0)) 
+
+	var alpha = log(501)/98
+	for i in range(nbr_pts - 2):
+		var exp = exp(alpha *(i))
+		var x = step_at - 1 + exp
+		step.append(Vector2(x, 1))
+	return step

@@ -12,14 +12,24 @@ var viewport_limits:Array
 var command_color:Color = Color.RED
 var output_color:Color = Color.DARK_GREEN
 
-var weights:Dictionary = {"k":1,"wo":40,"xi":1,"z":0}
+var weights:Dictionary = {"k":1,"wo":40,"xi":1,"z":0} #default
 var global_delta:float = .016
+var chart_type_ID:int = 0
+var simulation_time:float = 2.1
+var step_at:float = .21
+var precision:float = 1
+
 var command_array:Array[Vector2] = []
 var response_array:Array[Vector2] = []
 
 var chart_plotter:LineChartPlotter
 var chart_container:Control
 var response_time_label:Label
+
+##used to get process time
+var start_time
+var end_time
+
 
 func add_graph_response_time() -> HBoxContainer:
 	var parent:HBoxContainer = HBoxContainer.new()
@@ -83,30 +93,26 @@ func _draw() -> void:
 	@warning_ignore("unsafe_call_argument")
 	var response:Array = chart_plotter.adapt_viewporter(response_array,
 			viewported["ratios"],viewported["offsets"],viewport_limits)
-			
+	
 	draw_colored_polygon(corners,bg_color)
 	@warning_ignore("unsafe_call_argument")
 	draw_polyline(viewported["viewported_values"],command_color,4)
 	draw_polyline(response,output_color,3)
 	draw_polyline(corners,border_color,2)
-
-func set_command_step() -> void:
-	command_array = chart_plotter.vect_step(5,100,10)
-
-func set_command_detailled() -> void:
-	command_array = chart_plotter.vect_command(5,500)
+	end_time = Time.get_ticks_usec()
+	#print((end_time-start_time)/1000)
 
 func plot_array_response() -> void:
+	start_time = Time.get_ticks_usec()
 	var second_order:SecondOrderSystem = SecondOrderSystem.new(weights)
 	response_array = [Vector2.ZERO]
 	for i:int in range(1,command_array.size()):
-		var output:Dictionary = second_order.vec2_second_order_response(global_delta,command_array[i],response_array[i-1])
-		response_array.append(output["output"])
-		
-	# needed fot plotting because second order modified y 
-	for i:int in range(0,response_array.size()):
-		response_array[i][0]=i
-	response_time_label.text = str(round(get_temps_95()*1000)/1000)
+		var output:Dictionary = second_order.float_second_order_response(global_delta*precision,command_array[i].y,response_array[i-1].y)
+		var response:Vector2 = Vector2(command_array[i].x,output["output"])
+		response_array.append(response)
+	
+	if response_time_label.get_parent().is_visible():
+		response_time_label.text =  "%.3f" % get_temps_95_bis()
 	queue_redraw()
 
 func update_chart_weights(new_weights:Dictionary) -> void:
@@ -114,11 +120,41 @@ func update_chart_weights(new_weights:Dictionary) -> void:
 		weights[key] = new_weights[key]
 	plot_array_response()
 
-func update_chart_type(chart_type_ID:int) -> void:
-	if chart_type_ID == 0: set_command_step()
-	elif chart_type_ID == 1: set_command_detailled()
+func update_chart_type(new_chart_type_ID:int) -> void:
+	chart_type_ID = new_chart_type_ID
+	if new_chart_type_ID == 0: set_command_step()
+	elif new_chart_type_ID == 1: set_command_detailled()
 	plot_array_response()
 
+func update_simuation_precision(new_precision:float) -> void:
+	precision = new_precision
+	update_chart_type(chart_type_ID)
+
+func update_simuation_duration(new_duration:float) -> void:
+	simulation_time = new_duration
+	step_at = simulation_time/10
+	update_chart_type(chart_type_ID)
+
+func set_command_step() -> void:
+	if precision ==0: precision = 1
+	command_array = chart_plotter.precise_step(simulation_time,global_delta,step_at,precision)
+	response_time_label.get_parent().set_visible(true)
+
+func set_command_detailled() -> void:
+	command_array = chart_plotter.complex_command(simulation_time,global_delta,precision)
+	response_time_label.get_parent().set_visible(false)
+
+func get_temps_95_bis()-> float:
+	for i in range(command_array.size()-1,0,-1):
+		var out_range = response_array[i].y < 0.95 * command_array[-1].y
+		out_range = out_range or response_array[i].y > 1.05 * command_array[-1].y
+		if out_range:
+			if i > .95 * command_array.size()-1:
+				return +INF
+			return i * global_delta * precision - step_at
+	return 1
+
+
 func get_temps_95() -> float:
-	if weights["xi"] > 1:return (3/weights["wo"])
+	if weights["xi"] > 1:return (5*weights["xi"]/weights["wo"])
 	else: return (3/(weights["wo"]*weights["xi"]))

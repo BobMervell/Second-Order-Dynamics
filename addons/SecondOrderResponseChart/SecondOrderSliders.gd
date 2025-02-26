@@ -14,9 +14,9 @@ var weights:Dictionary
 
 func _init() -> void :
 	var parent:VBoxContainer = VBoxContainer.new()
-	k_slider = add_graph_weight("k",-2,2,.01,1)
-	wo_slider = add_graph_weight("wo",0,300,.5,40)
-	xi_slider = add_graph_weight("xi",0,10,.001,1)
+	k_slider = add_graph_weight("k",-2,2,.1,1)
+	wo_slider = add_graph_weight("wo",0,300,.01,40)
+	xi_slider = add_graph_weight("xi",0,10,.01,1)
 	z_slider =add_graph_weight("z",-2,2,.001,0)
 	parent.add_child(k_slider)
 	parent.add_child(wo_slider)
@@ -31,6 +31,9 @@ func add_graph_weight(weight_name:String,min_value:float,max_value:float,step:fl
 	float_slider.max_value = max_value
 	float_slider.step = step
 	float_slider.value = export_value
+	float_slider.allow_greater = true
+	float_slider.allow_lesser = true
+	float_slider.exp_edit = true
 	float_slider.value_changed.connect(slider_value_changed.bind(weight_name))
 	return float_slider
 

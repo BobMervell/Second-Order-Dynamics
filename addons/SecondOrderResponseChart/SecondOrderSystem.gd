@@ -13,18 +13,20 @@ var wo:float #Pulsation (response/oscillation speed)
 var xi:float #ksi >= 1 == no oscillation, ksi<1 = overshoot + oscillations
 var z:float # z<0 = reversal start , z>0 strong start + overshoot
 
-var vec3_old_input:Vector3 = Vector3.ZERO
-var vec3_output_dot:Vector3  = Vector3.ZERO
-
+var float_old_input:float = 0
+var float_output_dot:float  = 0
 
 var vec2_old_input:Vector2 = Vector2.ZERO
 var vec2_output_dot:Vector2  = Vector2.ZERO
+
+var vec3_old_input:Vector3 = Vector3.ZERO
+var vec3_output_dot:Vector3  = Vector3.ZERO
 
 ## When using SecondOrderSystem; You need to create your a SecondOrderSystem instance the following manner:
 ## [br][code] @export var body_second_order_config:Dictionary
 ## [br] @export var body_second_order:SecondOrderSystem[/code]
 ## [br] This ensure that the plugin can detect correctly each instance.
-## [br] You also need to initiateeach instance in ready
+## [br] You also need to initiate each instance in ready
 ## [br][code] body_second_order = SecondOrderSystem.new(body_second_order_config)[/code]
 ##[br][b]Note:[/b]
 ## Use vec2_output_variables or vec3_output_variables depending on your vectors type
@@ -38,6 +40,25 @@ func _init(weights:Dictionary) -> void:
 	wo = weights["wo"]
 	xi = weights["xi"]
 	z = weights["z"]
+
+## This function computes the second-order response of a system for float,
+##[br] returns a dictionnary containing the output and it's derivatives.
+func float_second_order_response(delta:float,input:float,
+		previous_output:float,input_dot:Variant=null) -> Dictionary:
+	
+	# Estimate input_dot
+	if input_dot == null:
+		input_dot = (input - float_old_input)/delta
+		float_old_input = input
+	
+	# process second order
+	var output_dotdot:float = ( k * wo**2 * (input + input_dot * z)
+				 - 2 * xi * wo * float_output_dot
+				- wo**2 * previous_output )
+	float_output_dot = float_output_dot + output_dotdot * delta / (1 + 2 * xi * wo * delta)
+	previous_output += float_output_dot * delta
+
+	return {"output":previous_output,"output_dot":float_output_dot,"output_dotdot":output_dotdot}
 
 ## This function computes the second-order response of a system for vector2,
 ##[br] returns a dictionnary containing the output and it's derivatives.
