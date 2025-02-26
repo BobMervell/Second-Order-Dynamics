@@ -27,8 +27,8 @@ var chart_container:Control
 var response_time_label:Label
 
 ##used to get process time
-var start_time
-var end_time
+var start_time:float
+var end_time:float
 
 
 func add_graph_response_time() -> HBoxContainer:
@@ -108,9 +108,10 @@ func plot_array_response() -> void:
 	response_array = [Vector2.ZERO]
 	for i:int in range(1,command_array.size()):
 		var output:Dictionary = second_order.float_second_order_response(global_delta*precision,command_array[i].y,response_array[i-1].y)
+		@warning_ignore("unsafe_call_argument")
 		var response:Vector2 = Vector2(command_array[i].x,output["output"])
 		response_array.append(response)
-	
+	@warning_ignore("unsafe_method_access")
 	if response_time_label.get_parent().is_visible():
 		response_time_label.text =  "%.3f" % get_temps_95_bis()
 	queue_redraw()
@@ -138,15 +139,17 @@ func update_simuation_duration(new_duration:float) -> void:
 func set_command_step() -> void:
 	if precision ==0: precision = 1
 	command_array = chart_plotter.precise_step(simulation_time,global_delta,step_at,precision)
+	@warning_ignore("unsafe_method_access")
 	response_time_label.get_parent().set_visible(true)
 
 func set_command_detailled() -> void:
 	command_array = chart_plotter.complex_command(simulation_time,global_delta,precision)
+	@warning_ignore("unsafe_method_access")
 	response_time_label.get_parent().set_visible(false)
 
 func get_temps_95_bis()-> float:
-	for i in range(command_array.size()-1,0,-1):
-		var out_range = response_array[i].y < 0.95 * command_array[-1].y
+	for i:int in range(command_array.size()-1,0,-1):
+		var out_range:bool = response_array[i].y < 0.95 * command_array[-1].y
 		out_range = out_range or response_array[i].y > 1.05 * command_array[-1].y
 		if out_range:
 			if i > .95 * command_array.size()-1:
