@@ -18,7 +18,7 @@ func _parse_begin(_object:Object) -> void:
 func _parse_property(_object: Object, _type: Variant.Type, name: String, _hint_type: PropertyHint,
 		 hint_string: String, _usage_flags:PropertyUsageFlags, _wide: bool) -> bool:
 	
-	if name.contains("second_order_config"):
+	if name.contains("config"):
 		var config_id:String = name.get_slice('_',0)
 		var chart_slider_instance:SecondOrderSliders = SecondOrderSliders.new()
 		var label:String = "Second order config " + config_id
