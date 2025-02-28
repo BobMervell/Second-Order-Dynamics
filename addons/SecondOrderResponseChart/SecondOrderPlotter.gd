@@ -121,20 +121,24 @@ func update_chart_weights(new_weights:Dictionary) -> void:
 		weights[key] = new_weights[key]
 	plot_array_response()
 
-func update_chart_type(new_chart_type_ID:int) -> void:
+func update_chart_type(new_chart_type_ID:int,config_id:String) -> void:
+	if config_id != name.get_slice('_',0):
+		return
 	chart_type_ID = new_chart_type_ID
 	if new_chart_type_ID == 0: set_command_step()
 	elif new_chart_type_ID == 1: set_command_detailled()
 	plot_array_response()
 
-func update_simuation_precision(new_precision:float) -> void:
+func update_simuation_precision(new_precision:float,config_id:String) -> void:
+	if config_id != name.get_slice('_',0): return
 	precision = new_precision
-	update_chart_type(chart_type_ID)
+	update_chart_type(chart_type_ID,config_id)
 
-func update_simuation_duration(new_duration:float) -> void:
+func update_simuation_duration(new_duration:float,config_id:String) -> void:
+	if config_id != name.get_slice('_',0): return
 	simulation_time = new_duration
 	step_at = simulation_time/10
-	update_chart_type(chart_type_ID)
+	update_chart_type(chart_type_ID,config_id)
 
 func set_command_step() -> void:
 	if precision ==0: precision = 1

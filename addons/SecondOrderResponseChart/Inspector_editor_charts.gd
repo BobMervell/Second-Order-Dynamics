@@ -1,8 +1,8 @@
 extends EditorInspectorPlugin
 
-signal command_type_updated(item_id:int)
-signal simuation_duration_updated(nbr_pts:float)
-signal simuation_precision_updated(nbr_pts:float)
+signal command_type_updated(item_id:int,config_id:String)
+signal simuation_duration_updated(nbr_pts:float,config_id:String)
+signal simuation_precision_updated(nbr_pts:float,config_id:String)
 
 
 var second_order_configs:Dictionary
@@ -37,19 +37,20 @@ func _parse_property(_object: Object, _type: Variant.Type, name: String, _hint_t
 				"\n See second order system for correct implementation.")
 		
 		var chart_plot_instance:SecondOrderPlotter = SecondOrderPlotter.new()
+		chart_plot_instance.name = name
 		chart_plot_instance.update_chart_weights(corresponding_chart_slider.weights)
 		corresponding_chart_slider.weights_updated.connect(chart_plot_instance.update_chart_weights)
 		command_type_updated.connect(chart_plot_instance.update_chart_type)
 		simuation_precision_updated.connect(chart_plot_instance.update_simuation_precision)
 		simuation_duration_updated.connect(chart_plot_instance.update_simuation_duration)
-		add_custom_control(add_graph_command_type())
+		add_custom_control(add_graph_command_type(config_id))
 		add_custom_control(chart_plot_instance)
-		add_custom_control(add_time_slider())
-		add_custom_control(add_precision_slider())
+		add_custom_control(add_time_slider(config_id))
+		add_custom_control(add_precision_slider(config_id))
 		return true
 	return false
 
-func add_graph_command_type() -> HBoxContainer:
+func add_graph_command_type(config_id:String) -> HBoxContainer:
 	var parent:HBoxContainer = HBoxContainer.new()
 	var text:Label = Label.new()
 	var obtion_btn:OptionButton = OptionButton.new()
@@ -59,10 +60,10 @@ func add_graph_command_type() -> HBoxContainer:
 	obtion_btn.add_item("Step",0)
 	obtion_btn.add_item("Complex",1)
 	obtion_btn.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	obtion_btn.item_selected.connect(item_value_updated)
+	obtion_btn.item_selected.connect(item_value_updated.bind(config_id))
 	return parent
 
-func add_time_slider() -> HBoxContainer:
+func add_time_slider(config_id:String) -> HBoxContainer:
 	var parent:HBoxContainer = HBoxContainer.new()
 	var slider:EditorSpinSlider = EditorSpinSlider.new()
 	var slider_label:Label = Label.new()
@@ -72,7 +73,7 @@ func add_time_slider() -> HBoxContainer:
 	slider.min_value = .1
 	slider.value = 2.1
 	slider.exp_edit = true
-	slider.value_changed.connect(time_slider_updated)
+	slider.value_changed.connect(time_slider_updated.bind(config_id))
 	slider.step = .01
 	slider.rounded = false
 	slider.allow_greater = true
@@ -85,7 +86,7 @@ func add_time_slider() -> HBoxContainer:
 	parent.add_child(slider)
 	return parent
 
-func add_precision_slider() -> HBoxContainer:
+func add_precision_slider(config_id:String) -> HBoxContainer:
 	var parent:HBoxContainer = HBoxContainer.new()
 	var slider:EditorSpinSlider = EditorSpinSlider.new()
 	var slider_label:Label = Label.new()
@@ -95,7 +96,7 @@ func add_precision_slider() -> HBoxContainer:
 	slider.min_value = 0.5
 	slider.value = 1.5
 	slider.exp_edit = true
-	slider.value_changed.connect(precision_slider_updated)
+	slider.value_changed.connect(precision_slider_updated.bind(config_id))
 	slider.step = .01
 	slider.allow_greater = true
 	slider.allow_lesser = true
@@ -109,12 +110,12 @@ func add_precision_slider() -> HBoxContainer:
 			- Lower values have an impact on editor frame rate. ")
 	return parent
 
-func time_slider_updated(value:float) -> void:
-	simuation_duration_updated.emit(value)
+func time_slider_updated(value:float,config_id:String) -> void:
+	simuation_duration_updated.emit(value,config_id)
 
-func precision_slider_updated(value:float) -> void:
+func precision_slider_updated(value:float,config_id:String) -> void:
 	value = max(value,0.01)
-	simuation_precision_updated.emit(value)
+	simuation_precision_updated.emit(value,config_id)
 
-func item_value_updated(item_id:int) -> void:
-	command_type_updated.emit(item_id)
+func item_value_updated(item_id:int,config_id:String) -> void:
+	command_type_updated.emit(item_id,config_id)

@@ -39,9 +39,9 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5054, 0)
 script = ExtResource("2_q5h5u")
 move_second_order_config = {
 "k": 1.0,
-"wo": 13.0,
-"xi": 0.04,
-"z": 0.0
+"wo": 7.29,
+"xi": 1.0,
+"z": -0.28
 }
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="CharacterBody3D"]

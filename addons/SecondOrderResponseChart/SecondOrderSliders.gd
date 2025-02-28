@@ -2,7 +2,6 @@
 extends EditorProperty
 class_name SecondOrderSliders
 
-
 signal weights_updated(weights:Dictionary)
 
 var k_slider:EditorSpinSlider
@@ -27,6 +26,7 @@ func _ready() -> void:
 	get_edited_object().set(get_edited_property(),weights)
 	weights_updated.emit(weights)
 	emit_changed(get_edited_property(),weights)
+	
 
 func add_graph_weight(weight_name:String,min_value:float,max_value:float,step:float,export_value:float) -> EditorSpinSlider:
 	var float_slider:EditorSpinSlider = EditorSpinSlider.new()
