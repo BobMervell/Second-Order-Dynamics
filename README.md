@@ -66,8 +66,9 @@ Second Order Dynamics Addon for Godot ⚙️🎮  A Godot addon that implements 
 To use the plugin you need to add two export variables, one of type SecondOrderSystem (from the addon) and one  dictionnary (which is used for the parameters).
 The plugin can detect the config dictionnary and associate it with the SecondOrderSystem on conditions:
   1. The dictionnary must be placed above the SecondOrderSystem.
-  2. The part of the variable names before the first underscore (let's call it name_id) must match exactly for proper configuration.
-  3. If you use multiple SecondOrderSystems for one node, the name id must be unique per SecondOrderSystem.
+  2. Its name must contain "config".
+  3. The part of the variable names before the first underscore (let's call it name_id) must match exactly for proper configuration.
+  4. If you use multiple SecondOrderSystems for one node, the name id must be unique per SecondOrderSystem.
 
 ### Correct implementation:
 
