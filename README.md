@@ -104,6 +104,7 @@ To customize your movement response with the plugin, you need to call the functi
         output_velocity = move_second_order.float_second_order_response(delta,input_velocity,output_velocity,)["output"]
       	output_velocity = move_second_order.vec2_second_order_response(delta,input_velocity,output_velocity,)["output"]
         output_velocity = move_second_order.vec3_second_order_response(delta,input_velocity,output_velocity,)["output"]
+Every function returns a dictionnary of format: {"output":output,"output_dot":output_dot,"output_dotdot":output_dotdot}
 
 **Note:** 
 
