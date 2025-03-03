@@ -79,11 +79,11 @@ The plugin can detect the config dictionnary and associate it with the SecondOrd
 
 Name_ids not unique
 
-      @export var second_config_dictionnary : Dictionnary
-      @export var second_order : SecondOrderSystem
+      @export var second_config_dictionnary_A : Dictionnary
+      @export var second_order_A : SecondOrderSystem
 
-      @export var second_config_dictionnary : Dictionnary
-      @export var second_order : SecondOrderSystem
+      @export var second_config_dictionnary_B : Dictionnary
+      @export var second_order_B : SecondOrderSystem
 
 Different name_ids
 
