@@ -23,9 +23,13 @@ func _init() -> void :
 	add_child(parent)
 
 func _ready() -> void:
+	var old_weights:Dictionary = get_edited_object().get(get_edited_property())
+	if old_weights.size() == 4:
+		weights = old_weights
 	get_edited_object().set(get_edited_property(),weights)
 	weights_updated.emit(weights)
 	emit_changed(get_edited_property(),weights)
+	
 	
 
 func add_graph_weight(weight_name:String,min_value:float,max_value:float,step:float,export_value:float) -> EditorSpinSlider:
