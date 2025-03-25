@@ -48,7 +48,7 @@ Second Order Dynamics Addon for Godot ⚙️🎮  A Godot addon that implements 
 # 📦 Installation:
 
 1. **Download the Addon:** Clone or download the repository from GitHub.
-2. **Move the Folder:** Place the verlet_rope_addon folder inside your "res://addons/" directory.
+2. **Move the Folder:** Place the SecondOrderDynamics folder inside your "res://addons/" directory.
 3. **Enable the Plugin:**
 
     Open Godot Editor.
