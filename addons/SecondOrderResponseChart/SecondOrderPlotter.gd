@@ -11,8 +11,8 @@ var viewport_limits:Array
 
 var command_color:Color = Color.RED
 var output_color:Color = Color.DARK_GREEN
-
-var weights:Dictionary = {"k":1,"wo":40,"xi":1,"z":0} #default
+const DEFAULT_WEIGHTS:Dictionary = {"k":1,"wo":40,"xi":1,"z":0,"delta_err":.9,"T_offset":0} 
+var weights:Dictionary = DEFAULT_WEIGHTS.duplicate()
 var global_delta:float = .016
 var chart_type_ID:int = 0
 var simulation_time:float = 2.1
@@ -83,7 +83,6 @@ func _draw() -> void:
 	var editor_settings:EditorSettings = EditorInterface.get_editor_settings()
 	var bg_color:Color = editor_settings.get_setting("text_editor/theme/highlighting/background_color")
 	var border_color:Color = editor_settings.get_setting("text_editor/theme/highlighting/text_color")
-	
 	var graph_height:float = viewport_height*(1-margin)
 	var graph_width:float = viewport_width
 
@@ -100,7 +99,6 @@ func _draw() -> void:
 	draw_polyline(response,output_color,3)
 	draw_polyline(corners,border_color,2)
 	end_time = Time.get_ticks_usec()
-	#print((end_time-start_time)/1000)
 
 func plot_array_response() -> void:
 	start_time = Time.get_ticks_usec()
@@ -160,8 +158,3 @@ func get_temps_95_bis()-> float:
 				return +INF
 			return i * global_delta * precision - step_at
 	return 1
-
-
-func get_temps_95() -> float:
-	if weights["xi"] > 1:return (5*weights["xi"]/weights["wo"])
-	else: return (3/(weights["wo"]*weights["xi"]))

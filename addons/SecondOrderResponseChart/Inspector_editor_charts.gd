@@ -34,7 +34,7 @@ func _parse_property(_object: Object, _type: Variant.Type, name: String, _hint_t
 		else:
 			push_warning("Second order system plugin error:\n
 				Unable to find corresponding config for: " + name.to_upper() + 
-				"\n See second order system for correct implementation.")
+				"\n See second_order_system.gd for correct implementation.")
 		
 		var chart_plot_instance:SecondOrderPlotter = SecondOrderPlotter.new()
 		chart_plot_instance.name = name
