@@ -1,5 +1,5 @@
 # Second-Order-Dynamics
-Second Order Dynamics Addon for Godot ⚙️🎮  A Godot addon that implements Second Order Dynamics for smoother, more natural, and customizable motion. Ideal for spring-like movement, responsive animations, and physics-based effects with precise control over damping, frequency, and responsiveness. This addon can be used to customize the movement of pretty much every node, in 2d and 3d. 🚀
+Second Order Dynamics Addon for for Godot 4.4 ( may work but untested for later versions) ⚙️🎮  An addon that implements Second Order Dynamics for smoother, more natural, and customizable motion. Ideal for spring-like movement, responsive animations, and physics-based effects with precise control over damping, frequency, and responsiveness. This addon can be used to customize the movement of pretty much every node, in 2d and 3d. 🚀
 
 ## Repository States
 
